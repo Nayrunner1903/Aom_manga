@@ -1,0 +1,213 @@
+@import 'tailwindcss';
+@import '../../vendor/livewire/flux/dist/flux.css';
+
+@source '../views';
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../vendor/livewire/flux-pro/stubs/**/*.blade.php';
+@source '../../vendor/livewire/flux/stubs/**/*.blade.php';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+    --color-*: initial;
+    --color-black: #000;
+    --color-white: #fff;
+    --color-transparent: transparent;
+    --color-current: currentColor;
+    --font-sans: 'Leelawadee UI', Tahoma, 'Noto Sans Thai', 'Instrument Sans', sans-serif;
+    --radius-sm: 0.125rem;
+    --radius-md: 0.125rem;
+    --radius-lg: 0.125rem;
+    --radius-xl: 0.125rem;
+    --radius-2xl: 0.125rem;
+
+    --color-zinc-50: #fafafa;
+    --color-zinc-100: #f5f5f5;
+    --color-zinc-200: #e5e5e5;
+    --color-zinc-300: #d4d4d4;
+    --color-zinc-400: #a3a3a3;
+    --color-zinc-500: #737373;
+    --color-zinc-600: #525252;
+    --color-zinc-700: #404040;
+    --color-zinc-800: #262626;
+    --color-zinc-900: #171717;
+    --color-zinc-950: #0a0a0a;
+
+    --color-neutral-50: #fafafa;
+    --color-neutral-100: #f5f5f5;
+    --color-neutral-200: #e5e5e5;
+    --color-neutral-300: #d4d4d4;
+    --color-neutral-400: #a3a3a3;
+    --color-neutral-500: #737373;
+    --color-neutral-600: #525252;
+    --color-neutral-700: #404040;
+    --color-neutral-800: #262626;
+    --color-neutral-900: #171717;
+    --color-neutral-950: #0a0a0a;
+    --color-gray-50: #fafafa;
+    --color-gray-100: #f5f5f5;
+    --color-gray-200: #e5e5e5;
+    --color-gray-300: #d4d4d4;
+    --color-gray-400: #a3a3a3;
+    --color-gray-500: #737373;
+    --color-gray-600: #525252;
+    --color-gray-700: #404040;
+    --color-gray-800: #262626;
+    --color-gray-900: #171717;
+    --color-gray-950: #0a0a0a;
+
+    /* Flux semantic states use the same ink palette as the rest of the app. */
+    --color-red-400: #d4d4d4;
+    --color-red-500: #171717;
+    --color-red-600: #404040;
+    --color-green-400: #d4d4d4;
+    --color-green-500: #525252;
+    --color-green-600: #404040;
+    --color-emerald-400: #d4d4d4;
+    --color-emerald-500: #525252;
+
+    --color-accent: var(--color-neutral-800);
+    --color-accent-content: var(--color-neutral-800);
+    --color-accent-foreground: var(--color-white);
+}
+
+@layer theme {
+    .dark {
+        --color-accent: var(--color-white);
+        --color-accent-content: var(--color-white);
+        --color-accent-foreground: var(--color-neutral-800);
+    }
+}
+
+@layer base {
+
+    *,
+    ::after,
+    ::before,
+    ::backdrop,
+    ::file-selector-button {
+        border-color: var(--color-gray-200, currentColor);
+    }
+}
+
+[data-flux-field]:not(ui-radio, ui-checkbox) {
+    @apply grid gap-2;
+}
+
+[data-flux-label] {
+    @apply  !mb-0 !leading-tight;
+}
+
+input:focus[data-flux-control],
+textarea:focus[data-flux-control],
+select:focus[data-flux-control] {
+    @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
+}
+
+:root {
+    --ink: #111;
+    --paper: #fff;
+    --wash: #f4f4f4;
+    --tone: #d4d4d4;
+    color-scheme: light;
+}
+
+:root.dark {
+    --ink: #f5f5f5;
+    --paper: #171717;
+    --wash: #222;
+    --tone: #404040;
+    color-scheme: dark;
+}
+
+::selection { background: var(--ink); color: var(--paper); }
+
+.manga-app {
+    color: var(--ink);
+    background-color: var(--wash);
+    background-image: radial-gradient(var(--tone) 0.7px, transparent 0.7px);
+    background-size: 7px 7px;
+    line-height: 1.7;
+    accent-color: var(--ink);
+}
+
+.manga-app :focus-visible {
+    outline: 2px dashed var(--ink);
+    outline-offset: 4px;
+}
+
+.manga-skip { position: fixed; top: -8rem; left: 1rem; z-index: 100; padding: 1rem; background: var(--paper); border: 2px solid var(--ink); }
+.manga-skip:focus { top: 1rem; }
+
+.manga-sidebar {
+    background: var(--paper);
+    border-inline-end: 3px solid var(--ink);
+}
+.manga-sidebar-note { margin: 1rem 0 2rem; padding: 1rem; border-block: 2px solid var(--ink); font-size: 0.8rem; font-weight: 700; }
+.manga-sidebar-note span { font-weight: 400; opacity: 0.7; }
+.manga-mobile-header { background: var(--paper); border-bottom: 3px solid var(--ink); }
+
+.manga-main { width: 100%; max-width: 1600px; margin-inline: auto; padding: clamp(1rem, 3vw, 2.5rem); }
+.manga-main > section > div:first-of-type {
+    padding: clamp(1rem, 2.5vw, 2rem);
+    border: 3px solid var(--ink);
+    background-color: var(--paper);
+    background-image: linear-gradient(125deg, transparent 80%, var(--tone) 80%, var(--tone) 81%, transparent 81%);
+    box-shadow: 6px 6px 0 var(--ink);
+    margin-bottom: 2rem;
+}
+.manga-app h1[data-flux-heading] { font-size: clamp(1.6rem, 3vw, 2.5rem); font-weight: 900; line-height: 1.5; letter-spacing: -0.025em; }
+.manga-app h2[data-flux-heading] { font-weight: 800; font-size: 1.1rem; }
+.manga-app [data-flux-text], .manga-app [data-flux-subheading] { line-height: 1.8; }
+.manga-main dl > div, .manga-main form, .manga-main section[aria-labelledby="trends-heading"], .manga-main section[aria-labelledby="categories-heading"] { background-color: var(--paper); }
+.manga-main dl > div { border: 2px solid var(--ink); box-shadow: 4px 4px 0 var(--tone); }
+.manga-main dl > div:last-child { background-image: radial-gradient(var(--tone) 0.65px, transparent 0.65px); background-size: 5px 5px; }
+.manga-main dd { font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.manga-app table { background: var(--paper); }
+.manga-app th { background: var(--ink); color: var(--paper); font-weight: 700; white-space: nowrap; border-bottom: 3px solid var(--ink); }
+.manga-app td { padding-block: 1rem; }
+.manga-app tbody tr:hover { background: var(--wash); }
+.manga-main p[role="status"], .manga-notice { padding: 0.85rem 1rem; border: 2px solid var(--ink); border-inline-start-width: 7px; background: var(--paper); color: var(--ink); }
+
+.manga-app [data-flux-button] { border: 2px solid var(--ink); font-weight: 700; box-shadow: 3px 3px 0 var(--tone); transition: transform 140ms, box-shadow 140ms; }
+.manga-app [data-flux-button]:hover:not(:disabled) { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--ink); }
+.manga-app [data-flux-button]:active:not(:disabled) { transform: translate(1px, 1px); box-shadow: none; }
+.manga-app [data-flux-input], .manga-app input[data-flux-control], .manga-app select[data-flux-control], .manga-app textarea[data-flux-control] { border-color: var(--ink); border-width: 1.5px; background-color: var(--paper); color: var(--ink); }
+.manga-app [data-flux-error] { color: var(--ink); border-inline-start: 3px solid var(--ink); padding-inline-start: 0.65rem; font-weight: 700; }
+.manga-app [data-invalid] { outline: 1px dashed var(--ink); outline-offset: 2px; }
+.manga-app [data-flux-avatar] { background: var(--tone); color: var(--ink); border: 1px solid var(--ink); }
+.manga-app [data-flux-menu], .manga-app [data-flux-modal] > dialog, .manga-app [data-flux-toast] { background: var(--paper); color: var(--ink); border: 2px solid var(--ink); box-shadow: 5px 5px 0 var(--tone); }
+.manga-app [data-flux-toast] svg { color: var(--ink); }
+.manga-app [data-flux-sidebar-item][data-current] { background: var(--ink); color: var(--paper); }
+
+.manga-auth-shell { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: clamp(2rem, 6vw, 6rem); max-width: 1100px; min-height: 100svh; margin: auto; padding: 3rem 1.5rem; }
+.manga-auth-panel { padding: clamp(1.5rem, 4vw, 2.5rem); background: var(--paper); border: 3px solid var(--ink); box-shadow: 8px 8px 0 var(--ink); }
+.manga-auth-intro { position: relative; padding: 1rem; }
+.manga-auth-intro h1 { font-size: clamp(3rem, 6vw, 5rem); line-height: 1.45; font-weight: 900; letter-spacing: -0.04em; margin: 1.5rem 0; }
+.manga-auth-intro h1 span { display: inline-block; transform: rotate(-12deg); }
+.manga-auth-intro p { margin-bottom: 2rem; }
+.manga-kicker { display: inline-block; padding: 0.4rem 0.9rem; background: var(--ink); color: var(--paper); font-size: 0.8rem; font-weight: 700; transform: rotate(-2deg); }
+.manga-stamp { display: grid; place-content: center; width: 7rem; height: 7rem; border: 3px solid var(--ink); border-radius: 50%; text-align: center; font-size: 1.1rem; font-weight: 900; background: var(--paper); box-shadow: 4px 4px 0 var(--tone); transform: rotate(10deg); margin: 1.5rem 0; }
+.manga-cover { max-width: 1200px; margin: auto; padding: clamp(1.25rem, 4vw, 3rem); }
+.manga-cover-nav { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; border-bottom: 3px solid var(--ink); padding-bottom: 1.25rem; }
+.manga-cover-hero { position: relative; display: grid; grid-template-columns: 1.4fr 1fr; gap: 2rem; align-items: center; background: var(--paper); border: 3px solid var(--ink); box-shadow: 9px 9px 0 var(--ink); padding: clamp(1.5rem, 5vw, 4rem); margin-block: 2.5rem; }
+.manga-cover-hero h1 { font-size: clamp(2.5rem, 6vw, 5rem); line-height: 1.45; font-weight: 900; letter-spacing: -0.04em; margin-block: 1.5rem; }
+.manga-cover-art { padding: 1.5rem; border: 2px solid var(--ink); background-image: radial-gradient(var(--tone) 1px, transparent 1px); background-size: 5px 5px; transform: rotate(3deg); }
+.manga-cover-art svg { width: 100%; height: auto; }
+.manga-cover-features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+.manga-cover-features article { padding: 1.5rem; border: 2px solid var(--ink); background: var(--paper); box-shadow: 4px 4px 0 var(--tone); }
+.manga-cover-features h2 { font-size: 1.2rem; font-weight: 900; margin-block: 0.75rem; }
+
+@media (max-width: 767px) {
+    .manga-auth-shell, .manga-cover-hero, .manga-cover-features { grid-template-columns: 1fr; }
+    .manga-auth-shell { gap: 1.5rem; min-height: auto; padding-block: 1.5rem; }
+    .manga-auth-intro h1 { font-size: 2.2rem; margin-block: 0.75rem; }
+    .manga-auth-intro h1 br, .manga-auth-intro .manga-stamp, .manga-auth-intro > a { display: none; }
+    .manga-auth-intro p { margin-bottom: 0; }
+    .manga-cover-art { max-width: 22rem; margin: 0.75rem auto; }
+    .manga-main h1[data-flux-heading] { font-size: 1.65rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .manga-app *, .manga-app *::before, .manga-app *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
