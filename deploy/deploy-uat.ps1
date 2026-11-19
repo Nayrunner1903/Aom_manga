@@ -141,7 +141,6 @@ try {
         throw "Public UAT health check failed."
     }
 
-    throw "ROLLBACK DRILL: Simulated deployment failure"
     Write-Host "DEPLOY SUCCESS: $active -> $target"
 }
 catch {
