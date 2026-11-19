@@ -1,6 +1,8 @@
 
 pipeline {
-    agent any
+    agent {
+        label 'windows-uat'
+    }
 
     options {
         timestamps()
@@ -16,31 +18,24 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh '''
-                    docker build --progress=plain -t manga-laravel:uat .
-                '''
+                bat 'docker build -t manga-laravel:build-%BUILD_NUMBER% .'
             }
         }
 
-        stage('Verify Image') {
+        stage('Deploy Blue-Green') {
             steps {
-                sh '''
-                    docker image inspect manga-laravel:uat
-                '''
+                bat 'powershell.exe -NoProfile -ExecutionPolicy Bypass -File deploy\\deploy-uat.ps1'
             }
         }
-
-        stage('Test Windows UAT Agent') {
-    agent {
-        label 'windows-uat'
     }
-    steps {
-        bat '''
-            docker version
-            docker ps --filter "name=manga-uat-"
-        '''
+
+    post {
+        success {
+            echo 'UAT deployment completed successfully.'
+        }
+
+        failure {
+            echo 'UAT deployment failed. Check deployment log and rollback status.'
+        }
     }
 }
-    }
-}
-
