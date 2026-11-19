@@ -7,22 +7,21 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install pdo_sqlite mbstring zip intl \
     && rm -rf /var/lib/apt/lists/*
 
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 
 WORKDIR /app
 
 COPY . .
 
 RUN set -eux; \
-    composer --version; \
-    composer install \
+    php /usr/local/bin/composer --version; \
+    php /usr/local/bin/composer install \
         --no-dev \
         --no-interaction \
         --prefer-dist \
         --optimize-autoloader \
         --no-scripts \
         -vvv; \
-    ls -la vendor/; \
     test -f vendor/autoload.php; \
     php artisan package:discover --ansi
 
