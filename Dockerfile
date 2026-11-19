@@ -18,6 +18,8 @@ RUN composer install \
     --no-interaction \
     --prefer-dist \
     --optimize-autoloader \
+    --no-scripts \
+    && test -f vendor/autoload.php \
     && php artisan package:discover --ansi
 
 
