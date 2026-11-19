@@ -3,30 +3,39 @@
 FROM php:8.4-cli AS composer-deps
 
 RUN apt-get update && apt-get install -y \
-    git unzip libzip-dev libicu-dev libonig-dev libsqlite3-dev \
+    git \
+    unzip \
+    curl \
+    ca-certificates \
+    libzip-dev \
+    libicu-dev \
+    libonig-dev \
+    libsqlite3-dev \
     && docker-php-ext-install pdo_sqlite mbstring zip intl \
     && rm -rf /var/lib/apt/lists/*
 
-COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
+# Install Composer directly on PHP 8.4
+RUN curl -fsSL https://getcomposer.org/installer \
+        -o /tmp/composer-setup.php \
+    && php /tmp/composer-setup.php \
+        --install-dir=/usr/local/bin \
+        --filename=composer \
+    && rm /tmp/composer-setup.php \
+    && test -s /usr/local/bin/composer \
+    && composer --version
 
 WORKDIR /app
 
 COPY . .
 
-RUN set -eux; \
-    php -v; \
-    php -i | grep -E 'display_errors|error_reporting|auto_prepend_file' || true; \
-    ls -lh /usr/local/bin/composer; \
-    head -c 80 /usr/local/bin/composer; \
-    echo; \
-    php -d display_errors=1 -d error_reporting=-1 /usr/local/bin/composer --version; \
-    echo "Composer version exit code: $?"; \
-    php -d display_errors=1 -d error_reporting=-1 /usr/local/bin/composer install \
-        --no-dev --no-interaction --prefer-dist \
-        --optimize-autoloader --no-scripts -vvv; \
-    echo "Composer install exit code: $?"; \
-    ls -la vendor/ || true; \
-    test -f vendor/autoload.php
+RUN composer install \
+    --no-dev \
+    --no-interaction \
+    --prefer-dist \
+    --optimize-autoloader \
+    --no-scripts \
+    && test -f vendor/autoload.php \
+    && php artisan package:discover --ansi
 
 
 # Stage 2: Build frontend assets
@@ -52,7 +61,10 @@ RUN npm run build
 FROM php:8.4-apache
 
 RUN apt-get update && apt-get install -y \
-    libzip-dev libicu-dev libonig-dev libsqlite3-dev \
+    libzip-dev \
+    libicu-dev \
+    libonig-dev \
+    libsqlite3-dev \
     && docker-php-ext-install pdo_sqlite mbstring zip intl \
     && a2enmod rewrite \
     && rm -rf /var/lib/apt/lists/*
@@ -71,7 +83,8 @@ COPY . .
 COPY --from=composer-deps /app/vendor ./vendor
 COPY --from=frontend /app/public/build ./public/build
 
-RUN mkdir -p database \
+RUN mkdir -p \
+    database \
     storage/framework/cache \
     storage/framework/sessions \
     storage/framework/views \
