@@ -1,0 +1,10 @@
+
+services:
+  app:
+    build: .
+    container_name: aom_manga_app
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/var/www/html
+    restart: unless-stopped

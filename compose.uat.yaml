@@ -1,0 +1,33 @@
+
+name: manga-uat-lab
+
+services:
+  blue:
+    image: manga-laravel:v1
+    env_file:
+      - .env
+    networks:
+      - uat-network
+
+  green:
+    image: manga-laravel:v2
+    env_file:
+      - .env
+    networks:
+      - uat-network
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "8090:80"
+    volumes:
+      - ./deploy/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - blue
+      - green
+    networks:
+      - uat-network
+
+networks:
+  uat-network:
+    driver: bridge
