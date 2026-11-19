@@ -29,6 +29,18 @@ pipeline {
                 '''
             }
         }
+
+        stage('Test Windows UAT Agent') {
+    agent {
+        label 'windows-uat'
+    }
+    steps {
+        bat '''
+            docker version
+            docker ps --filter "name=manga-uat-"
+        '''
+    }
+}
     }
 }
 
