@@ -1,3 +1,4 @@
+
 pipeline {
     agent any
 
@@ -16,7 +17,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 sh '''
-                    docker build -t manga-laravel:uat .
+                    docker build --progress=plain -t manga-laravel:uat .
                 '''
             }
         }
@@ -30,3 +31,4 @@ pipeline {
         }
     }
 }
+

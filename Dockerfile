@@ -14,16 +14,19 @@ WORKDIR /app
 COPY . .
 
 RUN set -eux; \
-    php /usr/local/bin/composer --version; \
-    php /usr/local/bin/composer install \
-        --no-dev \
-        --no-interaction \
-        --prefer-dist \
-        --optimize-autoloader \
-        --no-scripts \
-        -vvv; \
-    test -f vendor/autoload.php; \
-    php artisan package:discover --ansi
+    php -v; \
+    php -i | grep -E 'display_errors|error_reporting|auto_prepend_file' || true; \
+    ls -lh /usr/local/bin/composer; \
+    head -c 80 /usr/local/bin/composer; \
+    echo; \
+    php -d display_errors=1 -d error_reporting=-1 /usr/local/bin/composer --version; \
+    echo "Composer version exit code: $?"; \
+    php -d display_errors=1 -d error_reporting=-1 /usr/local/bin/composer install \
+        --no-dev --no-interaction --prefer-dist \
+        --optimize-autoloader --no-scripts -vvv; \
+    echo "Composer install exit code: $?"; \
+    ls -la vendor/ || true; \
+    test -f vendor/autoload.php
 
 
 # Stage 2: Build frontend assets
