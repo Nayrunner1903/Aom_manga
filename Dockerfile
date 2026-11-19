@@ -13,14 +13,18 @@ WORKDIR /app
 
 COPY . .
 
-RUN composer install \
-    --no-dev \
-    --no-interaction \
-    --prefer-dist \
-    --optimize-autoloader \
-    --no-scripts \
-    && test -f vendor/autoload.php \
-    && php artisan package:discover --ansi
+RUN set -eux; \
+    composer --version; \
+    composer install \
+        --no-dev \
+        --no-interaction \
+        --prefer-dist \
+        --optimize-autoloader \
+        --no-scripts \
+        -vvv; \
+    ls -la vendor/; \
+    test -f vendor/autoload.php; \
+    php artisan package:discover --ansi
 
 
 # Stage 2: Build frontend assets
